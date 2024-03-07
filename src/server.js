@@ -5,27 +5,41 @@ const app = express()
 app.use(express.urlencoded({ extended: true }))
 
 const productos = new ProductManager()
-const readProducts = productos.readProducts()
+
+//const readProducts = productos.readProducts()
+
+// app.get("/products", async (req, resp) => {
+
+//     let limit = parseInt(req.query.limit)
+//     if (!limit) return resp.send(await readProducts)
+
+
+//     let allProducts = await readProducts
+//     let productLimit = allProducts.slice(0, limit)
+
+
+//     resp.send(productLimit);
+// })
+
+/*-------------------------------*/
 
 app.get("/products", async (req, resp) => {
+    resp.send(await productos.getProducts());
+});
 
-    let limit = parseInt(req.query.limit)
-    if (!limit) return resp.send(await readProducts)
+// app.get("/products/:id", async (req, resp) => {
+//     let id = parseInt(req.params.id)
+//     let allProducts = await readProducts
+//     let productById = allProducts.find(product => product.id === id)
+//     resp.send(productById)
+// }) 
 
-
-    let allProducts = await readProducts
-    let productLimit = allProducts.slice(0, limit)
-
-
-    resp.send(productLimit);
-})
+/*--------------------------------------*/ 
 
 app.get("/products/:id", async (req, resp) => {
-    let id = parseInt(req.params.id)
-    let allProducts = await readProducts
-    let productById = allProducts.find(product => product.id === id)
-    resp.send(productById)
-})
+    let id = parseInt(req.params.id);
+    resp.send(await productos.getProductsById(id));
+});
 
 const PORT = 8080
 const server = app.listen(PORT, () => {
